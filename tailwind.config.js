@@ -9,6 +9,17 @@ module.exports = {
         sans: ["Nunito", ...defaultTheme.fontFamily.sans],
         logo: ['"Crete Round"', "sans-serif"]
       },
+      gridTemplateRows: {
+        'layout': 'auto minmax(900px, 1fr) auto',
+      },
+      colors: {
+        blue: {
+          DEFAULT: "#235895"
+        },
+        orange: {
+          DEFAULT: "#FF6B35"
+        }
+      }
     },
   },
   variants: {

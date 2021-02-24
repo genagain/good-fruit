@@ -1,70 +1,98 @@
-# Getting Started with Create React App
+# Flask React Project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is the backend for the Flask React project.
 
-## Available Scripts
+## Getting started
 
-In the project directory, you can run:
+1. Clone this repository (only this branch)
 
-### `yarn start`
+   ```bash
+   git clone https://github.com/appacademy-starters/python-project-starter.git
+   ```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+2. Install dependencies
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+      ```bash
+      pipenv install --dev -r dev-requirements.txt && pipenv install -r requirements.txt
+      ```
 
-### `yarn test`
+3. Create a **.env** file based on the example with proper settings for your
+   development environment
+4. Setup your PostgreSQL user, password and database and make sure it matches your **.env** file
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+5. Get into your pipenv, migrate your database, seed your database, and run your flask app
 
-### `yarn build`
+   ```bash
+   pipenv shell
+   ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+   ```bash
+   flask db upgrade
+   ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+   ```bash
+   flask seed all
+   ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+   ```bash
+   flask run
+   ```
 
-### `yarn eject`
+6. To run the React App in development, checkout the [README](./react-app/README.md) inside the `react-app` directory.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+***
+*IMPORTANT!*
+   If you add any python dependencies to your pipfiles, you'll need to regenerate your requirements.txt before deployment.
+   You can do this by running:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+   ```bash
+   pipenv lock -r > requirements.txt
+   ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+*ALSO IMPORTANT!*
+   psycopg2-binary MUST remain a dev dependency because you can't install it on apline-linux.
+   There is a layer in the Dockerfile that will install psycopg2 (not binary) for us.
+***
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Deploy to Heroku
 
-## Learn More
+1. Create a new project on Heroku
+2. Under Resources click "Find more add-ons" and add the add on called "Heroku Postgres"
+3. Install the [Heroku CLI](https://devcenter.heroku.com/articles/heroku-command-line)
+4. Run
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+   ```bash
+   heroku login
+   ```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+5. Login to the heroku container registry
 
-### Code Splitting
+   ```bash
+   heroku container:login
+   ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+6. Update the `REACT_APP_BASE_URL` variable in the Dockerfile.
+   This should be the full URL of your Heroku app: i.e. "https://flask-react-aa.herokuapp.com"
+7. Push your docker container to heroku from the root directory of your project.
+   This will build the dockerfile and push the image to your heroku container registry
 
-### Analyzing the Bundle Size
+   ```bash
+   heroku container:push web -a {NAME_OF_HEROKU_APP}
+   ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+8. Release your docker container to heroku
 
-### Making a Progressive Web App
+   ```bash
+   heroku container:release web -a {NAME_OF_HEROKU_APP}
+   ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+9. set up your database:
 
-### Advanced Configuration
+   ```bash
+   heroku run -a {NAME_OF_HEROKU_APP} flask db upgrade
+   heroku run -a {NAME_OF_HEROKU_APP} flask seed all
+   ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+10. Under Settings find "Config Vars" and add any additional/secret .env variables.
 
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+11. profit

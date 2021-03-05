@@ -6,7 +6,7 @@ function App() {
     <div className="grid grid-rows-layout">
       <div className="row-span-1 sticky top-0 bg-blue">
         <div className="w-4/5 mx-auto">
-          <NavBar authenticated={true} />
+          <NavBar authenticated={false} />
         </div>
       </div>
       <div className="row-span-1">

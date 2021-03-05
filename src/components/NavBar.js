@@ -33,8 +33,8 @@ function NavBar({authenticated, setAuthenticated}) {
 
         ) : (
           <>
-              <NavLink className={`${!showLinks && 'hidden'} md:inline-block text-orange text-2xl mx-2`} to="/login">Login</NavLink>
-              <NavLink className={`${!showLinks && 'hidden'} md:inline-block text-orange text-2xl mx-2`} to="/signup">Sign Up</NavLink>
+              <NavLink className={`${!showLinks && 'hidden'} md:inline-block text-orange text-2xl mx-2`} to="/login" activeClassName="font-bold">Login</NavLink>
+              <NavLink className={`${!showLinks && 'hidden'} md:inline-block text-orange text-2xl mx-2`} to="/signup" activeClassName="font-bold">Sign Up</NavLink>
           </>
         )
       }

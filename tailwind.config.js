@@ -20,6 +20,9 @@ module.exports = {
         orange: {
           DEFAULT: "#FF6B35"
         }
+      },
+      width: {
+        'fit-content': 'fit-content'
       }
     },
   },
